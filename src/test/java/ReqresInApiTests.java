@@ -9,12 +9,14 @@ import java.util.Locale;
 
 public class ReqresInApiTests {
 
+    public static final String BASE_URL = "https://reqres.in/api";
+
     @Test
     void getSingleUserTest() {
         given()
                 .log().uri()
                 .when()
-                .get("https://reqres.in/api/users/3")
+                .get(BASE_URL + "/users/3")
                 .then()
                 .log().status()
                 .log().body()
@@ -27,7 +29,7 @@ public class ReqresInApiTests {
         given()
                 .log().uri()
                 .when()
-                .get("https://reqres.in/api/users/100")
+                .get(BASE_URL + "/users/100")
                 .then()
                 .log().status()
                 .log().body()
@@ -39,7 +41,7 @@ public class ReqresInApiTests {
         given()
                 .log().uri()
                 .when()
-                .get("https://reqres.in/api/unknown/10")
+                .get(BASE_URL + "/unknown/10")
                 .then()
                 .log().status()
                 .log().body()
@@ -58,7 +60,7 @@ public class ReqresInApiTests {
                 .body(body)
                 .contentType(JSON)
                 .when()
-                .post("https://reqres.in/api/users")
+                .post(BASE_URL + "/users")
                 .then()
                 .log().status()
                 .log().body()
@@ -75,7 +77,7 @@ public class ReqresInApiTests {
                 .body(body)
                 .contentType(JSON)
                 .when()
-                .post("https://reqres.in/api/login")
+                .post(BASE_URL + "/login")
                 .then()
                 .log().status()
                 .log().body()
