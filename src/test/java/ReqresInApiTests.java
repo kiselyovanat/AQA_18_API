@@ -3,6 +3,9 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
+import com.github.javafaker.Faker;
+
+import java.util.Locale;
 
 public class ReqresInApiTests {
 
@@ -46,7 +49,10 @@ public class ReqresInApiTests {
 
     @Test
     void postCreateTest() {
-        String body = "{ \"name\": \"Natasha\", \"job\": \"QA\" }";
+        Faker faker = new Faker(new Locale("en"));
+        String name = faker.name().firstName();
+        String job = faker.job().title();
+        String body = "{ \"name\": \"" + name +"\", \"job\": \"" + job + "\" }";
         given()
                 .log().uri()
                 .body(body)
@@ -57,8 +63,8 @@ public class ReqresInApiTests {
                 .log().status()
                 .log().body()
                 .statusCode(201)
-                .body("name", is("Natasha"))
-                .body("job", is("QA"));
+                .body("name", is(name))
+                .body("job", is(job));
     }
 
     @Test
