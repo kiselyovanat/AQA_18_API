@@ -1,5 +1,6 @@
 import com.github.javafaker.Faker;
 import models.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
@@ -20,7 +21,9 @@ import static specs.PostLoginSuccessfulSpec.postLoginSuccessfulResponseSpec;
 
 public class ReqresInApiTests {
 
+
     @Test
+    @DisplayName("Get single user test")
     void getSingleUserTest() {
         GetUserResponseModel response = step("Make request to get single user", () ->
                 given(getSingleUserRequestSpec)
@@ -34,15 +37,18 @@ public class ReqresInApiTests {
     }
 
     @Test
+    @DisplayName("Get non-existent user test (get status code 404)")
     void getUserNotFindTest() {
-        given(getUserNotFoundRequestSpec)
-                .when()
-                .get()
-                .then()
-                .spec(getUserNotFoundResponseSpec);
+        step("Make request to get non-existent user", () ->
+                given(getUserNotFoundRequestSpec)
+                        .when()
+                        .get()
+                        .then()
+                        .spec(getUserNotFoundResponseSpec));
     }
 
     @Test
+    @DisplayName("Get resource test")
     void getResourceTest() {
 
         GetResourceResponseModel response = step("Make request to get resource", () ->
@@ -57,6 +63,7 @@ public class ReqresInApiTests {
     }
 
     @Test
+    @DisplayName("Create user test")
     void postCreateTest() {
         Faker faker = new Faker(new Locale("en"));
         String name = faker.name().firstName();
@@ -83,6 +90,7 @@ public class ReqresInApiTests {
     }
 
     @Test
+    @DisplayName("Successful login test")
     void postLoginSuccessfulTest() {
         LoginBodyModel loginBody = new LoginBodyModel();
         loginBody.setEmail("eve.holt@reqres.in");
@@ -90,14 +98,14 @@ public class ReqresInApiTests {
 
         LoginResponseModel response = step("Make request to login (successful)", () ->
                 given(postLoginSuccessfulRequestSpec)
-                .body(loginBody)
-                .when()
-                .post()
-                .then()
-                .spec(postLoginSuccessfulResponseSpec)
-                .extract().as(LoginResponseModel.class));
+                        .body(loginBody)
+                        .when()
+                        .post()
+                        .then()
+                        .spec(postLoginSuccessfulResponseSpec)
+                        .extract().as(LoginResponseModel.class));
 
         step("Verify token in response", () ->
-        assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4"));
+                assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4"));
     }
 }
